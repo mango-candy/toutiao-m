@@ -1,7 +1,13 @@
 <template>
   <div class="login-container">
     <!-- 导航栏开始 -->
-    <van-nav-bar class="page-nav-bar" title="登录" />
+    <van-nav-bar class="page-nav-bar" title="登录" >
+      <van-icon
+      slot="left"
+      name="cross"
+      @click="$router.back()"
+       />
+    </van-nav-bar>
     <!-- 导航栏结束 -->
 
     <!-- 登录表单开始-->
@@ -105,6 +111,9 @@ export default {
         const { data } = await login(user)
         this.$store.commit('setUser', data.data)
         this.$toast.success('登录成功')
+
+        // 登录成功跳转回原来页面 但是不严谨
+        this.$router.back()
       } catch (err) {
         if (err.response.status === 400) { this.$toast.fail('手机号或验证码错误') } else { this.$toast.fail('登录失败，请稍后重试') }
       }
