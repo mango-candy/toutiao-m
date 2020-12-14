@@ -1,11 +1,11 @@
 // 请求模块
 
 import axios from 'axios'
-import store from '@/store/index.js'
+import store from '@/store'
 
 const request = axios.create({
   // 接口的基准路径
-  baseURL: 'http://ttapi.research.itcast.cn/'
+  baseURL: 'http://ttapi.research.itcast.cn/app/'
 })
 
 // 请求拦截器
