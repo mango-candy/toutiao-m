@@ -1,7 +1,6 @@
 // 封装本地存储操作模块
 
-// 存储数据
-
+// 存储数据(本地存储localStorage)
 export const setItem = (key, value) => {
   // 将数组、对象形式的数据转换为JSON格式的字符串进行存储
   if (typeof value === 'object') {
@@ -11,7 +10,6 @@ export const setItem = (key, value) => {
 }
 
 // 获取数据
-
 export const getItem = key => {
   const data = window.localStorage.getItem(key)
   try {
@@ -22,7 +20,6 @@ export const getItem = key => {
 }
 
 // 删除数据
-
 export const removeItem = key => {
   window.localStorage.removeItem(key)
 }

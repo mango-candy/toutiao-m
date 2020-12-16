@@ -51,9 +51,12 @@
 </template>
 
 <script>
-import { getAllChannels } from '@/api/channel'
+import { getAllChannels, addUserChannel } from '@/api/channel'
+import { mapState } from 'vuex'
+import { setItem } from '../../../utils/storage'
 export default {
   name: 'ChannelEdit',
+  // 父传子：props里面的值是从上级文件index.vue里面传递过来的
   props: {
     myChannels: {
       type: Array,
@@ -72,6 +75,8 @@ export default {
     }
   },
   computed: {
+    ...mapState(['user']),
+
     recommendChannels () {
       // const channels = []
       // this.allChannels.forEach(channel => {
@@ -113,8 +118,23 @@ export default {
       }
     },
     // 点击推荐频道元素名字添加进入我的频道
-    onAddChannel (channel) {
+    async onAddChannel (channel) {
       this.myChannels.push(channel)
+      // 数据持久化处理
+      if (this.user) {
+        try {
+          // 已登录，将数据接口放在线上。
+          await addUserChannel({
+            id: channel.id, // 频道id
+            seq: this.myChannels.length // 序列号
+          })
+        } catch (err) {
+          this.$toast('保存失败，请稍后重试')
+        }
+      } else {
+        // 未登录，将数据存储至本地
+        setItem('TOUTIAO_CHANNELS', this.myChannels)
+      }
     },
     // 点击 我的频道 内的频道元素 删除或切换频道
     onMyChannelClick (channel, index) {
