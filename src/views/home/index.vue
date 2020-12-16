@@ -39,7 +39,11 @@
       :style="{ height: '100%' }"
     >
     <!-- 弹出层的内容组件 -->
-      <channel-edit></channel-edit>
+      <channel-edit
+      :my-channels="channels"
+      :active="active"
+      @updata-active="onUpdataActive"
+      />
     </van-popup>
     <!-- 频道编辑弹出层结束 -->
   </div>
@@ -70,6 +74,7 @@ export default {
   },
   mounted () {},
   methods: {
+    // 获取我的频道内的频道数据
     async loadChannels () {
       try {
         const { data } = await getUserChannels()
@@ -77,6 +82,12 @@ export default {
       } catch (err) {
         this.$toast('获取频道数据失败')
       }
+    },
+    // 编辑状态下点击 我的频道 的频道元素主页切换频道
+    onUpdataActive (index, isChannelEditShow = true) {
+      this.active = index
+      // 关闭弹层
+      this.isChannelEditShow = isChannelEditShow
     }
   }
 }
