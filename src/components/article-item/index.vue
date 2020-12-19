@@ -1,5 +1,18 @@
 <template>
-  <van-cell class="article-item">
+<!-- 文章列表项组件 -->
+<!-- cell中的 to属性 和VueRouter中的RouterLink导航键中的 to属性用法是一样的 -->
+  <!-- :to="'/article/'+article.art_id" -->
+  <!-- :to="`/article/${article.art_id}`" -->
+  <van-cell
+  class="article-item"
+  :to="{
+      name:'article',  //根据路由名称进行跳转
+      params:{        //传递路由动态参数
+      // 属性名：路由路径中设计的动态参数名称
+        articleId: article.art_id
+      }
+    }"
+  >
     <div slot="title" class="title van-multi-ellipsis--l2">
       {{ article.title }}
     </div>
@@ -35,7 +48,7 @@
 export default {
   name: 'ArticleItem',
   props: {
-    article: {
+    article: { // 这个article是从home/components里面 article-item标签传过来的
       type: Object,
       required: true
     }
