@@ -25,6 +25,10 @@ import { addFollow, deleteFollow } from '@/api/user'
 export default {
   name: 'FollowUser',
   components: {},
+  model: {
+    prop: 'isFollowed',
+    event: 'update-is_followed'
+  },
   props: {
     isFollowed: {
       type: Boolean,

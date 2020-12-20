@@ -35,12 +35,24 @@
           />
           <div slot="title" class="user-name">{{article.aut_name}}</div>
           <div slot="label" class="publish-date">{{article.pubdate|relativeTime}}</div>
+
           <!-- 模板中需要使用$event来获取事件参数 -->
+          <!-- 当我们传递子组件的数据既要使用还需要修改，一般使用
+          传递：props
+          :is-followed="article.is_followed"
+          修改：$emit
+          @update-is_followed="article.is_followed=$event"
+          可以使用v-model进行简写:v-model="article.is_followed"
+          组件使用v-model传值则自动属性：
+          value="article.is_followed"
+          @input="article.is_followed=$event"
+          后续需要在子组件中使用model将默认名称value和@input改名
+          v-model只能最单数据传输修改,且单个组件只能使用一次，多个数据需要用sync
+           -->
          <follow-user
           class="follow-btn"
-          :is-followed="article.is_followed"
           :user-id="article.aut_id"
-           @update-is_followed="article.is_followed=$event"
+          v-model="article.is_followed"
          />
 
           <!-- <van-button
