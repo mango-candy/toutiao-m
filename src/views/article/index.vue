@@ -36,18 +36,24 @@
           <div slot="title" class="user-name">{{article.aut_name}}</div>
           <div slot="label" class="publish-date">{{article.pubdate|relativeTime}}</div>
           <van-button
+            v-if="article.is_followed"
+            class="follow-btn"
+            round
+            size="small"
+            :loading="followLoading"
+            @click="onFollow"
+          >已关注</van-button>
+          <van-button
+            v-else
             class="follow-btn"
             type="info"
             color="#3296fa"
             round
             size="small"
             icon="plus"
+            :loading="followLoading"
+            @click="onFollow"
           >关注</van-button>
-          <!-- <van-button
-            class="follow-btn"
-            round
-            size="small"
-          >已关注</van-button> -->
         </van-cell>
         <!-- /用户信息 -->
 
@@ -103,6 +109,7 @@
 <script>
 import { getArticleById } from '@/api/article'
 import { ImagePreview } from 'vant'
+import { addFollow, deleteFollow } from '@/api/user'
 
 export default {
   name: 'ArticleIndex',
@@ -117,7 +124,8 @@ export default {
     return {
       article: {}, // 文章详情
       loading: true, // 加载中的loading状态
-      errStatus: 0 // 状态码失败
+      errStatus: 0, // 状态码失败
+      followLoading: false // 关注按钮的loading状态
     }
   },
   computed: {},
@@ -148,9 +156,10 @@ export default {
       }
       this.loading = false // 无论是成功或者失败都需要关闭loading，唯一显示的loading的条件是网速过慢
     },
+    // 点击文章图片显示预览
     previewImage () {
       // 1.通过refs索性获取所有的内容
-      const articleContent = this.$refs['article.content']
+      const articleContent = this.$refs['article-content']
       // 2.将获取的内容里面的图片提取出来
       const imgs = articleContent.querySelectorAll('img')
       // 3.创建空数组，用来存储图片地址
@@ -160,7 +169,7 @@ export default {
         // 5.通过图片的src属性得到地址，将地址通过遍历的形式存储进前期创建的空数组
         images.push(img.src)
         // 6.遍历的时候创建所有图片的点击事件
-        img.onclick = function () {
+        img.onclick = () => {
           // 7.调用vant里面的ImagePreview组件
           ImagePreview({
             // 8.所有的图片地址
@@ -170,6 +179,30 @@ export default {
           })
         }
       })
+    },
+    // 点击--关注用户、取消关注 的按钮
+    async onFollow () {
+      // 点击关注按钮开始请求后台数据的时候将按钮变为loading状态，防止用户重复点击
+      this.followLoading = true
+      try {
+        // 如果点击按钮时存在article.is_followed的状态表明已关注
+        if (this.article.is_followed) {
+          // 因为当前处于已关注状态所以点击后需要变成未关注状态,所以需要调用的是取消关注的接口并传递被点击的用户ID
+          await deleteFollow(this.article.aut_id)
+        } else {
+          // 因为当前处于为关注状态,所以点击时需要关注该用户,所以调用的是关注的接口
+          await addFollow(this.article.aut_id)
+        }
+        // 切换按钮状态
+        this.article.is_followed = !this.article.is_followed
+      } catch (err) {
+        let message = '操作失败,请重试!'
+        if (err.response && err.response.status === 400) {
+          message = '用户无法关注自己'
+        } else this.$toast(message)
+      }
+      // 数据请求结束后撤销关注按钮的loading状态
+      this.followLoading = false
     }
   }
 }
