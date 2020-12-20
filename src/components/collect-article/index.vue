@@ -1,6 +1,6 @@
 <template>
     <van-icon
-    :name="value ? 'star' : 'star-o'"
+    :icon="value ? 'star' : 'star-o'"
     :class="{
       collected: value
     }"
