@@ -1,25 +1,25 @@
-// /v1_0/suggestion
+import request from '@/utils/request'
 
-// 用户相关请求模块
-import request from '@/utils/request.js'
-
-// 获取搜索联想建议
+/**
+ * 搜索建议
+ */
 export const getSearchSuggestions = q => {
   return request({
     method: 'GET',
-    url: '/v1_0/suggestion',
+    url: '/app/v1_0/suggestion',
     params: {
       q
     }
   })
 }
-// /v1_0/search
 
-// 获取搜索结果
+/**
+ * 搜索结果
+ */
 export const getSearchResult = params => {
   return request({
     method: 'GET',
-    url: '/v1_0/search',
+    url: '/app/v1_0/search',
     params
   })
 }

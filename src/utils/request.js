@@ -1,43 +1,32 @@
-// 请求模块
 
 import axios from 'axios'
 import store from '@/store'
 import JSONBig from 'json-bigint'
 
 const request = axios.create({
-  // 接口的基准路径
-  baseURL: 'http://ttapi.research.itcast.cn/app/',
-
-  // 自定义后端返回的原始数据 axios自带的原生api
-  // data:后端返回的原始数据，就是经过axios处理的JSON格式的字符串
+  baseURL: 'http://ttapi.research.itcast.cn/', // 接口的基准路径
   transformResponse: [function (data) {
     try {
       return JSONBig.parse(data)
     } catch (err) {
+      // 非 JSON 格式的字符串，直接返回即可
       return data
     }
   }]
-
 })
 
 // 请求拦截器
-
-request.interceptors.request.use(function (config) {
-  // 请求发起会经过这里
-  // config ：本次请求的配置对象
-  const { user } = store.state
-  // 如果user数据存在，且user数据内存在token
+request.interceptors.request.use(config => {
+  const {
+    user
+  } = store.state
   if (user && user.token) {
     config.headers.Authorization = `Bearer ${user.token}`
   }
-
-  // 注意：这里务必要返回config配置对象，否则请求就停在这里出不去了
   return config
-}, function (error) {
-  // 如果请求出错（请求未发出）
+}, error => {
+  // 如果请求出错了（还没发出去）
   return Promise.reject(error)
 })
-
-// 响应拦截器
 
 export default request

@@ -1,23 +1,23 @@
 <template>
      <van-button
-            v-if="isFollowed"
-            class="follow-btn"
-            round
-            size="small"
-            :loading="loading"
-            @click="onFollow"
-          >已关注</van-button>
-          <van-button
-            v-else
-            class="follow-btn"
-            type="info"
-            color="#3296fa"
-            round
-            size="small"
-            icon="plus"
-            :loading="loading"
-            @click="onFollow"
-          >关注</van-button>
+      v-if="isFollowed"
+      class="follow-btn"
+      round
+      size="small"
+      :loading="loading"
+      @click="onFollow"
+    >已关注</van-button>
+    <van-button
+      v-else
+      class="follow-btn"
+      type="info"
+      color="#3296fa"
+      round
+      size="small"
+      icon="plus"
+      :loading="loading"
+      @click="onFollow"
+    >关注</van-button>
 </template>
 
 <script>

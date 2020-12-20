@@ -1,10 +1,11 @@
 <template>
-    <van-icon
+     <!-- :color="value ? '#ffa500' : ''" -->
+  <van-button
     :icon="value ? 'star' : 'star-o'"
     :class="{
       collected: value
     }"
-    :loading="false"
+    :loading="loading"
     @click="onCollect"
   />
 </template>

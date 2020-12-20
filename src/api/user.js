@@ -1,21 +1,19 @@
-// 用户相关请求模块
-import request from '@/utils/request.js'
-// import store from '@/store'
+// 用户相关请求
+import request from '@/utils/request'
 
 export const login = data => {
   return request({
     method: 'POST',
-    url: '/v1_0/authorizations',
-    data: data
+    url: '/app/v1_0/authorizations',
+    data
   })
 }
 
-// 发送验证码  注意：每分钟只能发送一次
+// 发送验证码
 export const sendSms = mobile => {
   return request({
     method: 'GET',
-    url: `/v1_0/sms/codes/${mobile}`
-
+    url: `/app/v1_0/sms/codes/${mobile}`
   })
 }
 
@@ -23,12 +21,11 @@ export const sendSms = mobile => {
 export const getUserInfo = () => {
   return request({
     method: 'GET',
-    url: '/v1_0/user'
-    // 发送请求头数据
-    // headers: {
-    //   // 注意：该接口需要授权才能访问
-    //   Authorization: `Bearer ${store.state.user.token}`
-    // }
+    url: '/app/v1_0/user'
+    // 携带请求头信息
+    /* headers: {
+      Authorization: `Bearer ${store.state.user.token}`
+    } */
   })
 }
 
@@ -36,7 +33,7 @@ export const getUserInfo = () => {
 export const getUserChannels = () => {
   return request({
     method: 'GET',
-    url: '/v1_0/user/channels'
+    url: '/app/v1_0/user/channels'
   })
 }
 
@@ -44,9 +41,9 @@ export const getUserChannels = () => {
 export const addFollow = target => {
   return request({
     method: 'POST',
-    url: '/v1_0/user/followings',
+    url: '/app/v1_0/user/followings',
     data: {
-      target
+      target // 代表要关注的目标（用户ID）
     }
   })
 }
@@ -55,6 +52,6 @@ export const addFollow = target => {
 export const deleteFollow = target => {
   return request({
     method: 'DELETE',
-    url: `/v1_0/user/followings/${target}`
+    url: `/app/v1_0/user/followings/${target}`
   })
 }

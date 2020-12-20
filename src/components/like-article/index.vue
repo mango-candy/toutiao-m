@@ -1,5 +1,5 @@
 <template>
-  <van-icon
+<van-button
     :icon="value === 1 ? 'good-job' : 'good-job-o'"
     :class="{
       liked: value === 1

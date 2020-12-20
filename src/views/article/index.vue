@@ -5,7 +5,9 @@
       class="page-nav-bar"
       left-arrow
       title="黑马头条"
-    ></van-nav-bar>
+    >
+    <van-icon name="arrow-left" slot="left" @click="$router.back()"/>
+    </van-nav-bar>
     <!-- /导航栏 -->
 
     <div class="main-wrap">
@@ -80,32 +82,32 @@
         <!-- 文章内容 -->
         <div class="article-content markdown-body" v-html="article.content" ref="article-content"></div>
         <van-divider>正文结束</van-divider>
-            <!-- 底部区域 -->
+
+        <!--文章评论列表开始  -->
+             <comment-list
+             :source="article.art_id"
+             @onload-success="totalCommentCount=$event.total_count"
+             />
+        <!--文章评论列表结束-->
+
+          <!-- 底部区域 -->
         <div class="article-bottom">
-          <van-button
-            class="comment-btn"
-            type="default"
-            round
-            size="small"
-          >写评论</van-button>
+          <van-button class="comment-btn" type="default" round size="small"
+            >写评论</van-button
+          >
+          <!-- 这里在 info 替换成 badge -->
           <van-icon
-            class="comment-icon"
-            name="comment-o"
-            info="123"
-          />
+          name="comment-o"
+          :badge="totalCommentCount"
+          color="#777" />
+          <!-- 文章收藏 -->
           <collect-article
-          v-model="article.is_collected"
-          :article-id="article.art_id"
+            class="btn-item"
+            v-model="article.is_collected"
+            :article-id="article.art_id"
           />
-          <!-- <van-icon
-            color="#777"
-            name="star-o"
-          /> -->
-          <!-- <van-icon
-            color="#777"
-            name="good-job-o"
-          /> -->
-           <like-article
+          <!-- 文章点赞 -->
+          <like-article
             class="btn-item"
             v-model="article.attitude"
             :article-id="article.art_id"
@@ -141,12 +143,14 @@ import { ImagePreview } from 'vant'
 import FollowUser from '@/components/follow-user'
 import CollectArticle from '@/components/collect-article'
 import LikeArticle from '@/components/like-article'
+import CommentList from './components/comment-list'
 export default {
   name: 'ArticleIndex',
   components: {
     FollowUser,
     CollectArticle,
-    LikeArticle
+    LikeArticle,
+    CommentList
   },
   props: {
     articleId: {
@@ -159,7 +163,8 @@ export default {
       article: {}, // 文章详情
       loading: true, // 加载中的loading状态
       errStatus: 0, // 状态码失败
-      followLoading: false // 关注按钮的loading状态
+      followLoading: false, // 关注按钮的loading状态
+      totalCommentCount: 0
     }
   },
   computed: {},

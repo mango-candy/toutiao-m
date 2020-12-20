@@ -3,7 +3,6 @@ import VueRouter from 'vue-router'
 
 Vue.use(VueRouter)
 
-// 路由表
 const routes = [
   {
     path: '/login',
@@ -12,11 +11,11 @@ const routes = [
   },
   {
     path: '/',
-    // name: 'layout' 如果父路由内的子路由设置了默认路由，则父路由的name属性没有意义
+    // name: 'layout', // 拥有默认子路由时，此 name 没有意义
     component: () => import('@/views/layout'),
     children: [
       {
-        path: '/', // 默认子路由 ，默认子路由只能有一个
+        path: '', // 默认子路由，只能有一个
         name: 'home',
         component: () => import('@/views/home')
       },
@@ -46,7 +45,7 @@ const routes = [
     path: '/article/:articleId',
     name: 'article',
     component: () => import('@/views/article'),
-    props: true // 开启props传参，将路由参数映射到组件中的props数据中
+    props: true // 开启 props 传参，把路由参数映射到组件的 props 数据中
   }
 ]
 
