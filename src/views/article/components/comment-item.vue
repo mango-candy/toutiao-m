@@ -8,27 +8,34 @@
       :src="comment.aut_photo"
     />
     <div slot="title" class="title-wrap">
-      <div class="user-name">{{comment.aut_name}}</div>
+      <div class="user-name">{{ comment.aut_name }}</div>
       <van-button
         class="like-btn"
-        icon="good-job-o"
-      >{{comment.like_count ||'赞'}}</van-button>
+        :class="{
+          liked: comment.is_liking
+        }"
+        :icon="comment.is_liking ? 'good-job' : 'good-job-o'"
+        :loading="commentLoading"
+        @click="onCommentLike"
+        >{{ comment.like_count || '赞' }}</van-button
+      >
     </div>
 
     <div slot="label">
-      <p class="comment-content">{{comment.content}}</p>
+      <p class="comment-content">{{ comment.content }}</p>
       <div class="bottom-info">
-        <span class="comment-pubdate">{{comment.pubdate|relativeTime}}</span>
+        <span class="comment-pubdate">{{ comment.pubdate | relativeTime}}</span>
         <van-button
           class="reply-btn"
           round
-        >回复 {{comment.reply_count}}</van-button>
+        >回复 {{ comment.reply_count }}</van-button>
       </div>
     </div>
   </van-cell>
 </template>
 
 <script>
+import { addCommentLike, deleteCommentLike } from '@/api/comment'
 export default {
   name: 'CommentItem',
   components: {},
@@ -39,13 +46,32 @@ export default {
     }
   },
   data () {
-    return {}
+    return {
+      commentLoading: false
+    }
   },
   computed: {},
   watch: {},
   created () {},
   mounted () {},
-  methods: {}
+  methods: {
+    async onCommentLike () {
+      this.commentLoading = true
+      try {
+        if (this.comment.is_liking) {
+          await deleteCommentLike(this.comment.com_id)
+          this.comment.like_count--
+        } else {
+          await addCommentLike(this.comment.com_id)
+          this.comment.like_count++
+        }
+        this.comment.is_liking = !this.comment.is_liking
+      } catch (err) {
+        this.$toast('操作失败，请重新再试')
+      }
+      this.commentLoading = false
+    }
+  }
 }
 </script>
 
@@ -96,6 +122,9 @@ export default {
     margin-right: 7px;
     .van-icon {
       font-size: 30px;
+    }
+    &.liked {
+      color: #e5645f;
     }
   }
 }
