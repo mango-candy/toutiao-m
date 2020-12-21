@@ -92,7 +92,11 @@
 
           <!-- 底部区域 -->
         <div class="article-bottom">
-          <van-button class="comment-btn" type="default" round size="small"
+          <van-button
+          class="comment-btn"
+          type="default"
+          round size="small"
+          @click="isPostShow=true"
             >写评论</van-button
           >
           <!-- 这里在 info 替换成 badge -->
@@ -115,9 +119,18 @@
           <van-icon name="share" color="#777777"></van-icon>
         </div>
         <!-- /底部区域 -->
+
+        <!-- 发布评论的弹出层开始 -->
+        <van-popup
+        v-model="isPostShow"
+        position="bottom"
+        >
+        <comment-post />
+        </van-popup>
+        <!-- 发布评论的弹出层结束 -->
+
       </div>
       <!-- /加载完成-文章详情 -->
-
       <!-- 加载失败：404 -->
       <div v-else-if="errStatus===404" class="error-wrap">
         <van-icon name="failure" />
@@ -144,13 +157,15 @@ import FollowUser from '@/components/follow-user'
 import CollectArticle from '@/components/collect-article'
 import LikeArticle from '@/components/like-article'
 import CommentList from './components/comment-list'
+import CommentPost from './components/comment-post'
 export default {
   name: 'ArticleIndex',
   components: {
     FollowUser,
     CollectArticle,
     LikeArticle,
-    CommentList
+    CommentList,
+    CommentPost
   },
   props: {
     articleId: {
@@ -164,7 +179,8 @@ export default {
       loading: true, // 加载中的loading状态
       errStatus: 0, // 状态码失败
       followLoading: false, // 关注按钮的loading状态
-      totalCommentCount: 0
+      totalCommentCount: 0,
+      isPostShow: false // 评论弹出层显示于隐藏
     }
   },
   computed: {},
