@@ -75,7 +75,6 @@ export default {
           offset: this.offset,
           limit: this.limit
         })
-        console.log(data)
         // 2.将数据添加到列表中
         const { results } = data.data
         this.list.push(...results)
@@ -102,4 +101,28 @@ export default {
 }
 </script>
 
-<style lang="less" scoped></style>
+<style lang="less" scoped>
+    .scroll-wrap {
+      position: fixed;
+      top: 92px;
+      right: 0;
+      bottom: 88px;
+      left: 0;
+      overflow-y: auto;
+    }
+    .post-wrap {
+      position: fixed;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      height: 88px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background-color: #fff;
+      border-top: 1px solid #d8d8d8;
+      .post-btn {
+        width: 60%;
+      }
+    }
+</style>
