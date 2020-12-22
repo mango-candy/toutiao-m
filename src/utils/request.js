@@ -2,6 +2,7 @@
 import axios from 'axios'
 import store from '@/store'
 import JSONBig from 'json-bigint'
+import { toast } from 'vant'
 
 const request = axios.create({
   baseURL: 'http://ttapi.research.itcast.cn/', // 接口的基准路径
@@ -29,4 +30,23 @@ request.interceptors.request.use(config => {
   return Promise.reject(error)
 })
 
+// 响应拦截器
+request.interceptors.response.use(function (response) {
+  return response
+}, function (error) {
+  const status = error.response.status
+  if (status === 400) {
+    toast.fail('客户端请求参数错误')
+  } else if (status === 401) {
+    toast.fail('无效的TOKEN')
+  } else if (status === 403) {
+    toast.fail('客户端没有权限')
+  } else if (status === 404) {
+    toast.fail('请求资源不存在')
+  } else if (status === 405) {
+    toast.fail('请求方法不支持')
+  } else if (status >= 500) {
+    toast.fail('服务器异常')
+  }
+})
 export default request

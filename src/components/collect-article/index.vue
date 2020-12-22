@@ -38,13 +38,17 @@ export default {
     // 点击收藏按钮，已收藏则取消收藏，未收藏则收藏
     async onCollect () {
       this.loading = true
+      let r
       try {
         if (this.value) {
           // 已收藏，则操作取消收藏
-          await deleteCollect(this.articleId)
+          r = await deleteCollect(this.articleId)
         } else {
           // 未收藏，则添加收藏
-          await addCollect(this.articleId)
+          r = await addCollect(this.articleId)
+        }
+        if (!r) {
+          this.$toast.fail('操作失败，请重试')
         }
         // 所有操作完成后需要更新收藏图标视图
         this.$emit('input', !this.value)
