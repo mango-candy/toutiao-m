@@ -1,20 +1,76 @@
 <template>
-  <div class="user-profile">用户资料</div>
+  <div class="user-profile">
+    <!-- 导航栏 -->
+    <van-nav-bar
+      class="page-nav-bar"
+      title="个人信息"
+      left-arrow
+      @click-left="$router.back()"
+    />
+    <!-- /导航栏 -->
+    <!-- 个人信息 -->
+    <van-cell title="头像" is-link>
+      <van-image
+        class="avatar"
+        fit="cover"
+        round
+        :src="user.photo"
+      />
+    </van-cell>
+    <van-cell title="昵称" :value="user.name" is-link />
+    <van-cell
+    title="性别"
+    :value="user.gendar === 0 ?  '男' : '女'"
+    is-link />
+    <van-cell title="生日" :value=user.birthday is-link />
+    <!-- /个人信息 -->
+
+    <!-- 编辑昵称开始 -->
+    <van-popup style="height:100%" v-model="isUpdateNameShow">
+       hello world
+    </van-popup>
+    <!-- 编辑昵称结束 -->
+  </div>
 </template>
 
 <script>
+import { getUserProfile } from '@/api/user'
 export default {
   name: 'UserProfile',
   components: {},
   props: {},
   data () {
-    return {}
+    return {
+      user: {}, // 个人信息
+      isUpdateNameShow: false //
+    }
   },
   computed: {},
   watch: {},
-  created () {},
+  created () {
+    this.loadUserProfile()
+  },
   mounted () {},
-  methods: {}
+  methods: {
+    async loadUserProfile () {
+      try {
+        const { data } = await getUserProfile()
+        this.user = data.data
+      } catch (err) {
+        this.$toast('数据获取失败')
+      }
+    }
+  }
 }
 </script>
-<style scoped lang="less"></style>
+<style lang="less" scoped>
+.user-profile {
+  .avatar {
+    width: 60px;
+    height: 60px;
+  }
+  .van-popup {
+    background-color: #f5f7f9;
+  }
+}
+</style>
