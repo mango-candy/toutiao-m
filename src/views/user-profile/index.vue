@@ -17,7 +17,12 @@
         :src="user.photo"
       />
     </van-cell>
-    <van-cell title="昵称" :value="user.name" is-link />
+    <van-cell
+    title="昵称"
+    :value="user.name"
+    is-link
+    @click="isUpdateNameShow=true"
+    />
     <van-cell
     title="性别"
     :value="user.gendar === 0 ?  '男' : '女'"
@@ -26,8 +31,15 @@
     <!-- /个人信息 -->
 
     <!-- 编辑昵称开始 -->
-    <van-popup style="height:100%" v-model="isUpdateNameShow">
-       hello world
+    <van-popup
+    style="height:100%"
+    v-model="isUpdateNameShow"
+    position="bottom">
+      <update-name
+      v-if="isUpdateNameShow"
+      v-model="user.name"
+      @close="isUpdateNameShow=false"
+      />
     </van-popup>
     <!-- 编辑昵称结束 -->
   </div>
@@ -35,9 +47,12 @@
 
 <script>
 import { getUserProfile } from '@/api/user'
+import UpdateName from './components/update-name'
 export default {
   name: 'UserProfile',
-  components: {},
+  components: {
+    UpdateName
+  },
   props: {},
   data () {
     return {
