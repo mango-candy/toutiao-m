@@ -25,7 +25,7 @@
     />
     <van-cell
     title="性别"
-    :value="user.gendar === 0 ?  '男' : '女'"
+    :value="user.gender === 0 ?  '男' : '女'"
     is-link
     @click="isUpdateGenderShow=true"
     />
