@@ -7,6 +7,7 @@
       right-text="完成"
       @click-left="$emit('close')"
       @click-right="onConfirm"
+
     />
     <!-- /导航栏 -->
 
@@ -48,7 +49,7 @@ export default {
   mounted () {},
   methods: {
     async onConfirm () {
-      this.$$toast.loading({
+      this.$toast.loading({
         message: '保存中',
         forbidClick: true, // 禁止背景点击
         duration: 0 // 持续展示

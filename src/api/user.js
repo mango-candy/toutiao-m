@@ -65,9 +65,10 @@ export const getUserProfile = target => {
 }
 
 // 更新用户的个人资料
-export const updateUserProfile = target => {
+export const updateUserProfile = data => {
   return request({
     method: 'PATCH',
-    url: '/app/v1_0/user/profile'
+    url: '/app/v1_0/user/profile',
+    data
   })
 }
